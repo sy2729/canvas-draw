@@ -8,19 +8,12 @@
     padding: 0;
 }
 
+button:focus {
+    outline: none;
+}
+
 ul,ol {
     list-style: none;
-}
-
-.fn {
-    /* position: fixed; */
-
-}
-
-
-
-#erase {
-    
 }
 
 body {
@@ -28,9 +21,6 @@ body {
 }
 
 .tools {
-    position: fixed;
-    top: 0.5em;
-    left: 1em;
     font-size: 2em;
     
     
@@ -40,6 +30,9 @@ body {
     margin: 10px 0;
     cursor: pointer;
     transition: all .4s;
+    display: block;
+    width: 40px;
+    margin: 20px auto;
 }
 
 .tools li button {
@@ -51,7 +44,7 @@ body {
 }
 
 .tools li button:hover {
-    background: #222;
+    background: #eaa38c;
     color: #fff;
 }
 
@@ -62,6 +55,8 @@ body {
 
 li.active {
     transform: scale(1.2) rotate(-10deg);
+    color: #B14E49;
+    box-shadow: 1px 1px 5px 1px;
 }
 
 
@@ -69,25 +64,41 @@ canvas.using {
     cursor: none;
 }
 
-/* .eraser {
-    position: absolute;
-    border: 1px solid;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-} */
-
 #strokeWidthControl {
-    position: fixed;
-    top: 2em;
-    left: 2em;
-    /* transform-origin: center; */
-    /* transform: rotate(-90deg); */
+    position: relative;
+    width: 80%;
+    margin: 25px auto 15px;
 }
 
 #strokeWidthControl:after {
-    content: "Stroke Width";
+    content: "Brush Width & Eraser Size";
+    font-size: 10px;
     position: absolute;
-    top: -1em;
+    top: -2.3em;
     left: 0;
+}
+
+#colorPicker {
+    margin: 10px auto;
+    border: none;
+    box-shadow: 1px 2px 5px 0 #eaa38c;
+    width: 50%;
+    
+}
+.tools-panel input {
+    display: block;
+}
+
+.tools-panel {
+    position: fixed;
+    left: -5em;
+    top: 2em;
+    box-shadow: 1px 1px 5px 0px #eaa38c;
+    text-align: center;
+    width: 100px;
+    transition: all .4s ease-in-out;
+}
+
+.tools-panel.panelActivate {
+    left: 0em;
 }

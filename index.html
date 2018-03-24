@@ -20,31 +20,33 @@
     
     <canvas id='canvas'></canvas>
 
-    <ul class="tools">
-        <li>
-            <button id='clearAll'>Clear</button>
-        </li>
-        <li id='erase'>
-            <svg class="icon fn" aria-hidden="true" >
-                <use xlink:href="#icon-eraser"></use>
-            </svg>
-        </li>
-        <li class="active" id='pen'>
-            <svg class="icon fn" aria-hidden="true">
-                <use xlink:href="#icon-pen"></use>
-            </svg>
-        </li>
-        <li>
-            <a href="" id="download">
-                <svg class="icon fn" aria-hidden="true">
-                    <use xlink:href="#icon-download"></use>
+    <div class="tools-panel" id="tooPanel">
+        <ul class="tools">
+            <li>
+                <button id='clearAll'>Clear</button>
+            </li>
+            <li id='erase'>
+                <svg class="icon fn" aria-hidden="true" >
+                    <use xlink:href="#icon-eraser"></use>
                 </svg>
-            </a>
-        </li>
-    </ul>
-
-    <input type="range" , min="1" , max="20" , step="1" id="strokeWidthControl">
-
+            </li>
+            <li class="active" id='pen'>
+                <svg class="icon fn" aria-hidden="true">
+                    <use xlink:href="#icon-pen"></use>
+                </svg>
+            </li>
+            <li>
+                <a href="" id="download">
+                    <svg class="icon fn" aria-hidden="true">
+                        <use xlink:href="#icon-download"></use>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    
+        <input type="range" , min="1" , max="20" , step="1" id="strokeWidthControl">
+        <input type="color" id="colorPicker">
+    </div>
     
     <script>
 
@@ -58,10 +60,12 @@
         var usingErase = false;
         ctx.lineWidth = 4;
         var eraserSize = 10;
+        ctx.strokeStyle = "#222";
         erase.onclick = function() {
             usingErase = true;
             erase.classList.add('active');
             pen.classList.remove('active');
+            eraserSize = strokeWidthControl.value * 1.5;
         }
         clearAll.onclick = function() {
             ctx.clearRect(0,0,canvas.width, canvas.height)
@@ -75,14 +79,33 @@
             downloadCanvas(this, canvas, 'test.png')
         }
         strokeWidthControl.onchange = function() {
-            console.log(strokeWidthControl.value)
-            ctx.lineWidth = strokeWidthControl.value
+            if(usingErase) {
+                eraserSize = strokeWidthControl.value * 1.5;
+            }else {
+                ctx.lineWidth = strokeWidthControl.value;
+            }
+            
         }
+        colorPicker.onchange = function () {
+            ctx.strokeStyle = colorPicker.value;
+
+        };
+       
+       
 
 
         if(canvas.ontouchstart === null) {
             //using mobile-----------------------------------
+
+            //detect tools-panel-----------------------
+            tooPanel.ontouchstart = function () {
+                tooPanel.classList.add('panelActivate');
+            }
+
+
+            //start detect finger-------------------------            
             canvas.ontouchstart = function (m) {
+                tooPanel.classList.remove('panelActivate');
                 var x = m.touches[0].clientX;
                 var y = m.touches[0].clientY;
                 using = true;
@@ -111,6 +134,15 @@
 
         }else {
             //using PC-----------------------------------
+            //detect tools-panel-----------------------
+            tooPanel.onmouseenter = function () {
+                tooPanel.classList.add('panelActivate');
+            }
+            tooPanel.onmouseleave = function () {
+                tooPanel.classList.remove('panelActivate');
+            }
+
+            //start dectect mouse---------------------
             canvas.onmousedown = function (m) {
                 var x = m.clientX;
                 var y = m.clientY;
