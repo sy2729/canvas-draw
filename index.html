@@ -6,11 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Canvas Draw</title>
     <link rel="stylesheet" href="./main.css">
+    <style type="text/css">
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
     
     <canvas id='canvas'></canvas>
-    <button id='erase'>Eraser</button>
+
+    <ul class="tools">
+        <li>
+            <button id='clearAll'>Clear</button>
+        </li>
+        <li id='erase'>
+            <svg class="icon fn" aria-hidden="true" >
+                <use xlink:href="#icon-eraser"></use>
+            </svg>
+        </li>
+        <li class="active" id='pen'>
+            <svg class="icon fn" aria-hidden="true">
+                <use xlink:href="#icon-pen"></use>
+            </svg>
+        </li>
+        <li>
+            <a href="" id="download">
+                <svg class="icon fn" aria-hidden="true">
+                    <use xlink:href="#icon-download"></use>
+                </svg>
+            </a>
+        </li>
+    </ul>
+
+    <input type="range" , min="1" , max="20" , step="1" id="strokeWidthControl">
+
+    
     <script>
 
         setCanvasSizing();
@@ -21,23 +56,42 @@
         }
         var using = false;
         var usingErase = false;
-        ctx.lineWidth = 6;
+        ctx.lineWidth = 4;
         var eraserSize = 10;
         erase.onclick = function() {
-            usingErase = !usingErase;
+            usingErase = true;
+            erase.classList.add('active');
+            pen.classList.remove('active');
+        }
+        clearAll.onclick = function() {
+            ctx.clearRect(0,0,canvas.width, canvas.height)
+        }
+        pen.onclick = function() {
+            usingErase = false;
+            erase.classList.remove('active');
+            pen.classList.add('active');
+        }
+        download.onclick = function() {
+            downloadCanvas(this, canvas, 'test.png')
+        }
+        strokeWidthControl.onchange = function() {
+            console.log(strokeWidthControl.value)
+            ctx.lineWidth = strokeWidthControl.value
         }
 
+
         if(canvas.ontouchstart === null) {
+            //using mobile-----------------------------------
             canvas.ontouchstart = function (m) {
-                var x = m.clientX;
-                var y = m.clientY;
+                var x = m.touches[0].clientX;
+                var y = m.touches[0].clientY;
                 using = true;
                 lastPoint.x = x; lastPoint.y = y;
             }
 
             canvas.ontouchmove = function (m) {
-                var x = m.clientX;
-                var y = m.clientY;
+                var x = m.touches[0].clientX;
+                var y = m.touches[0].clientY;
                 var newPoint = { x: x, y: y };
                 if (using) {
                     if (usingErase) {
@@ -52,12 +106,11 @@
 
             canvas.ontouchend = function (m) {
                 using = false;
-                var x = m.clientX;
-                var y = m.clientY;
             }
                     
 
         }else {
+            //using PC-----------------------------------
             canvas.onmousedown = function (m) {
                 var x = m.clientX;
                 var y = m.clientY;
@@ -72,7 +125,7 @@
                 var newPoint = { x: x, y: y };
                 if (using) {
                     if (usingErase) {
-                        clear(newPoint.x, newPoint.y)
+                        clear(newPoint.x, newPoint.y);
                     } else {
                         drawLines(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
                     }
@@ -127,7 +180,44 @@
         function clear(x, y) {
             ctx.clearRect(x-eraserSize/2, y-eraserSize/2, eraserSize, eraserSize);
         }
+
+        function drawEraser(x, y) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.arc(x, y, eraserSize, 0, 2 * Math.PI)
+            ctx.stroke();
+        }
+
+        function downloadCanvas(link, canvasId, filename) {
+            link.href = canvasId.toDataURL();
+            link.download = filename;
+        }
+
+
+
+
+
+
+
+
+
+                        // if(usingErase) {
+                //     var eraser = document.createElement('div');
+                //     eraser.classList = `eraser eraser${eraserNum}`;
+
+                //     document.body.appendChild(eraser);
+                //     eraser.style.top = newPoint.y-5 + 'px';
+                //     eraser.style.left = newPoint.x-5 + 'px';
+                //     eraserNum++;
+                //     var lastEraser = document.getElementsByClassName(`eraser${eraserNum - 1}`)[0];
+                //     console.log(`eraser${eraserNum}`+ ";" + `eraser${eraserNum - 1}`)
+                //     console.log()
+                //     lastEraser.parentNode.removeChild(lastEraser);
+                // }
     </script>
 
+
+
+    <script src="//at.alicdn.com/t/font_603843_537go0t0pma8xgvi.js"></script>
 </body>
 </html>

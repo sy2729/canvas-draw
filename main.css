@@ -1,5 +1,6 @@
 #canvas {
-    background-color: #ddd;
+    background-color: #FFFFFD;
+    position: fixed;
 }
 
 * {
@@ -7,12 +8,86 @@
     padding: 0;
 }
 
-#erase {
-    position: fixed;
-    top: 10px;
-    left: 10px;
+ul,ol {
+    list-style: none;
 }
 
-#canvas {
+.fn {
+    /* position: fixed; */
+
+}
+
+
+
+#erase {
+    
+}
+
+body {
+    position: relative;
+}
+
+.tools {
+    position: fixed;
+    top: 0.5em;
+    left: 1em;
+    font-size: 2em;
+    
+    
+}
+
+.tools li {
+    margin: 10px 0;
+    cursor: pointer;
+    transition: all .4s;
+}
+
+.tools li button {
+    width: 40px;
+    height: 20px;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 3px;
+}
+
+.tools li button:hover {
+    background: #222;
+    color: #fff;
+}
+
+.tools li:hover {
+    /* transform: scale(1.2); */
+
+}
+
+li.active {
+    transform: scale(1.2) rotate(-10deg);
+}
+
+
+canvas.using {
+    cursor: none;
+}
+
+/* .eraser {
     position: absolute;
+    border: 1px solid;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+} */
+
+#strokeWidthControl {
+    position: fixed;
+    top: 2em;
+    left: 2em;
+    /* transform-origin: center; */
+    /* transform: rotate(-90deg); */
+}
+
+#strokeWidthControl:after {
+    content: "Stroke Width";
+    position: absolute;
+    top: -1em;
+    left: 0;
 }
