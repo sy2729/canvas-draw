@@ -35,12 +35,18 @@ body {
     margin: 20px auto;
 }
 
+.tools li:nth-child(1) {
+    margin: 0;
+}
+
 .tools li button {
-    width: 40px;
-    height: 20px;
+    width: 90px;
+    height: 30px;
     cursor: pointer;
     background: transparent;
     border-radius: 3px;
+    transition: all .4s;
+    margin: 30px 10px 10px;
 }
 
 .tools li button:hover {
@@ -67,7 +73,7 @@ canvas.using {
 #strokeWidthControl {
     position: relative;
     width: 80%;
-    margin: 25px auto 15px;
+    margin: 30px auto 20px;
 }
 
 #strokeWidthControl:after {
@@ -79,7 +85,7 @@ canvas.using {
 }
 
 #colorPicker {
-    margin: 10px auto;
+    margin: 20px auto 30px;
     border: none;
     box-shadow: 1px 2px 5px 0 #eaa38c;
     width: 50%;
@@ -95,8 +101,8 @@ canvas.using {
     top: 2em;
     box-shadow: 1px 1px 5px 0px #eaa38c;
     text-align: center;
-    width: 100px;
-    transition: all .4s ease-in-out;
+    width: 110px;
+    transition: all .4s cubic-bezier(0, 1.01, 0.84, 1.18);
 }
 
 .tools-panel.panelActivate {
