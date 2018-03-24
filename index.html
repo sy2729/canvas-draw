@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Canvas Draw</title>
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    
+    <canvas id='canvas'></canvas>
+    <button id='erase'>Eraser</button>
+    <script>
+
+        setCanvasSizing();
+        var ctx = canvas.getContext('2d');
+        var lastPoint = {
+            x: undefined,
+            y: undefined
+        }
+        var using = false;
+        var usingErase = false;
+        ctx.lineWidth = 6;
+        var eraserSize = 10;
+        erase.onclick = function() {
+            usingErase = !usingErase;
+        }
+
+        if(canvas.ontouchstart === null) {
+            canvas.ontouchstart = function (m) {
+                var x = m.clientX;
+                var y = m.clientY;
+                using = true;
+                lastPoint.x = x; lastPoint.y = y;
+            }
+
+            canvas.ontouchmove = function (m) {
+                var x = m.clientX;
+                var y = m.clientY;
+                var newPoint = { x: x, y: y };
+                if (using) {
+                    if (usingErase) {
+                        clear(newPoint.x, newPoint.y)
+                    } else {
+                        drawLines(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+                    }
+                }
+
+                lastPoint = newPoint;
+            }
+
+            canvas.ontouchend = function (m) {
+                using = false;
+                var x = m.clientX;
+                var y = m.clientY;
+            }
+                    
+
+        }else {
+            canvas.onmousedown = function (m) {
+                var x = m.clientX;
+                var y = m.clientY;
+                using = true;
+                lastPoint.x = x; lastPoint.y = y;
+
+            }
+
+            canvas.onmousemove = function (m) {
+                var x = m.clientX;
+                var y = m.clientY;
+                var newPoint = { x: x, y: y };
+                if (using) {
+                    if (usingErase) {
+                        clear(newPoint.x, newPoint.y)
+                    } else {
+                        drawLines(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+                    }
+                }
+
+                lastPoint = newPoint;
+            }
+
+            canvas.onmouseup = function (m) {
+                using = false;
+                var x = m.clientX;
+                var y = m.clientY;
+
+            }
+        }
+
+
+       
+
+        
+        
+    
+
+
+
+
+
+
+
+    // function libraries
+        function setCanvasSizing() {
+            var height = document.documentElement.clientHeight;
+            var width = document.documentElement.clientWidth;
+            canvas.height = height;
+            canvas.width = width;
+
+            window.onresize = function () {
+                canvas.height = height;
+                canvas.width = width;
+            }
+        }
+
+        function drawLines(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineWidth;
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        function clear(x, y) {
+            ctx.clearRect(x-eraserSize/2, y-eraserSize/2, eraserSize, eraserSize);
+        }
+    </script>
+
+</body>
+</html>
